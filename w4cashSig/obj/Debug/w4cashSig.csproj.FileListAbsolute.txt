@@ -1,0 +1,16 @@
+C:\Work\GitHub\w4cashSigWS\w4cashSig\bin\Debug\w4cashSig.exe.config
+C:\Work\GitHub\w4cashSigWS\w4cashSig\bin\Debug\w4cashSig.exe
+C:\Work\GitHub\w4cashSigWS\w4cashSig\bin\Debug\w4cashSig.pdb
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig.csprojResolveAssemblyReference.cache
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\MainWindow.g.cs
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\App.g.cs
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig_MarkupCompile.cache
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig_MarkupCompile.lref
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\MainWindow.baml
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig.g.resources
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig.Properties.Resources.resources
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig.csproj.GenerateResource.Cache
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig.exe
+C:\Work\GitHub\w4cashSigWS\w4cashSig\obj\Debug\w4cashSig.pdb
+C:\Work\GitHub\w4cashSigWS\w4cashSig\bin\Debug\Registrierkasse.dll
+C:\Work\GitHub\w4cashSigWS\w4cashSig\bin\Debug\Registrierkasse.pdb

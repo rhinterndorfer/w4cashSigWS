@@ -1,0 +1,5 @@
+C:\Work\GitHub\w4cashSigWS\Registrierkasse\bin\Debug\Registrierkasse.dll
+C:\Work\GitHub\w4cashSigWS\Registrierkasse\bin\Debug\Registrierkasse.pdb
+C:\Work\GitHub\w4cashSigWS\Registrierkasse\obj\Debug\Registrierkasse.csprojResolveAssemblyReference.cache
+C:\Work\GitHub\w4cashSigWS\Registrierkasse\obj\Debug\Registrierkasse.dll
+C:\Work\GitHub\w4cashSigWS\Registrierkasse\obj\Debug\Registrierkasse.pdb
