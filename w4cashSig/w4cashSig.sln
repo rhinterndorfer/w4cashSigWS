@@ -9,26 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registrierkasse", "..\Regis
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Debug|x86.Build.0 = Debug|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Release|x86.ActiveCfg = Release|Any CPU
-		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Release|x86.Build.0 = Release|Any CPU
-		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Debug|x86.ActiveCfg = Debug|x86
+		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Debug|x86.Build.0 = Debug|x86
+		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Release|x86.ActiveCfg = Release|x86
+		{E0CFB4FA-B9C4-42B4-8EB3-41DAE46462BC}.Release|x86.Build.0 = Release|x86
 		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Debug|x86.ActiveCfg = Debug|x86
 		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Debug|x86.Build.0 = Debug|x86
-		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Release|x86.ActiveCfg = Release|x86
 		{36FDE18C-6D25-4315-BDAC-BF0B315F9FD3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection

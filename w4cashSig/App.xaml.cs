@@ -23,6 +23,18 @@ namespace w4cashSig
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // Check Firewall Rule for inbound HTTP port
+            if (!FirewallHelper.Instance.RuleActive("HTTP in (80)"))
+            {
+                if (!WindowsHelper.RunAsAdministrator())
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+
+                FirewallHelper.Instance.RuleInAcceptActivate("HTTP in (80)", new string[] { "80" });
+            }
+
             StartHost();
         }
 
@@ -52,7 +64,8 @@ namespace w4cashSig
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             // Close the ServiceHost.
-            host.Close();
+            if(host != null)
+                host.Close();
         }
     }
 }
