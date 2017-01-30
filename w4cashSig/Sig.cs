@@ -15,26 +15,35 @@ namespace w4cashSig
         static private string zdaId;
         static private X509Certificate sigCert;
         static private X509Certificate issuerCert;
+        static private string lastError;
+        static private string lastErrorExceptionMessage;
 
-        static public bool Initialise()
+        private static void SetLastError(string error, string exceptionMessage = null)
+        {
+            lastError = error;
+            lastErrorExceptionMessage = exceptionMessage;
+        }
+
+        public static bool Initialise()
         {
             if (!isInitialised)
             {
-                using (RKWrapper rkw = new RKWrapper())
+                RKWrapper rkw = new RKWrapper();
+                
+                int ret = 0;
+
+                ret = rkw.GetInfo(out zdaId, out sigCert, out issuerCert);
+
+                if (ret == 0)
                 {
-                    int ret = 0;
-
-                    ret = rkw.GetInfo(out zdaId, out sigCert, out issuerCert);
-
-                    if (ret == 0)
-                    {
-                        isInitialised = true;
-                    }
-                    else
-                    {
-                        isInitialised = false;
-                    }
+                    isInitialised = true;
                 }
+                else
+                {
+                    SetLastError("Initialise.GetInfoFailed");
+                    isInitialised = false;
+                }
+                
             }
             return isInitialised;
         }
@@ -44,7 +53,19 @@ namespace w4cashSig
         {
             X509Certificate2 cer = new X509Certificate2(sigCert);
             var pk = cer.GetECDsaPublicKey();
-            return pk.VerifyData(data, signature, HashAlgorithmName.SHA256);
+            bool verified = false;
+            try {
+                verified = pk.VerifyData(data, signature, HashAlgorithmName.SHA256);
+            } catch(Exception ex)
+            {
+                SetLastError("VerifyData.VerifyDataException", ex.Message);
+            }
+
+            if (!verified)
+            {
+                SetLastError("VerifyData.VerifyDataFailed");
+            }
+            return verified;
         }
 
         public string GetInfoZDAId()
@@ -68,19 +89,21 @@ namespace w4cashSig
         public byte[] Sign(byte[] ToBeSigned)
         {
             Initialise();
-            using (RKWrapper rkw = new RKWrapper())
+            RKWrapper rkw = new RKWrapper();
+            
+            byte[] signature;
+            int ret = rkw.Sign(ToBeSigned, out signature);
+            if(ret != 0)
+                SetLastError("Sign.SignFailed");
+
+            if (ret == 0 && VerifyData(ToBeSigned, signature))
             {
-                byte[] signature;
-                int ret = rkw.Sign(ToBeSigned, out signature);
-                if (ret == 0 && VerifyData(ToBeSigned, signature))
-                {
-                    return signature;
-                }
-                else
-                {
-                    isInitialised = false;
-                    return null;
-                }
+                return signature;
+            }
+            else
+            {
+                isInitialised = false;
+                return null;
             }
         }
     }

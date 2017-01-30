@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Registrierkasse
 {
-    public class RKWrapper: IDisposable
+    public class RKWrapper
     {
         private static bool isInitialized = false;
         private static bool is32Bit = (IntPtr.Size == 4);
@@ -263,17 +262,11 @@ namespace Registrierkasse
                 isInitialized = false;
                 ret = 0;
             }
-            
 
             return ret;
         }
 
-        public void Dispose()
-        {
-            UnloadCryptoLibrary();
-            
-            
-        }
-        
+
+
     }
 }

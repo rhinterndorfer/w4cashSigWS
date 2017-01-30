@@ -21,7 +21,6 @@ namespace Registrierkasse
         [DllImport(LIBPATH, EntryPoint = "C_Finalize", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         public static extern int C_Finalize(IntPtr args);
 
-
         //CK_DEFINE_FUNCTION(CK_RV, C_RKInfo)(
         //    CK_UTF8CHAR ZdaId[3],
         //    CK_BYTE_PTR pSigCertSerial,

@@ -1,7 +1,0 @@
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\bin\x86\Debug\asignp11.dll
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\bin\x86\Debug\Registrierkasse.dll
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\bin\x86\Debug\Registrierkasse.pdb
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\obj\x86\Debug\Registrierkasse.csprojResolveAssemblyReference.cache
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\obj\x86\Debug\Registrierkasse.dll
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\obj\x86\Debug\Registrierkasse.pdb
-C:\Work\GitHub\w4cashSigWS\Registrierkasse\bin\x86\Debug\reg.reg
