@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Registrierkasse/bin
+/Registrierkasse/obj
+/w4cashSig/bin
+/w4cashSig/obj
+*.suo
