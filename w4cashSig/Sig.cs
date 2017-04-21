@@ -1,9 +1,12 @@
 ﻿using Registrierkasse;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +45,14 @@ namespace w4cashSig
                 {
                     SetLastError("Initialise.GetInfoFailed");
                     isInitialised = false;
+
+                    // try restart web service (host and process)
+                    OperationContext.Current.Host.Abort();
+                    OperationContext.Current.Host.Close();
+
+                    var entryAssembly = Assembly.GetEntryAssembly();
+                    Process.Start(entryAssembly.CodeBase);
+                    Process.GetCurrentProcess().Kill();
                 }
                 
             }
