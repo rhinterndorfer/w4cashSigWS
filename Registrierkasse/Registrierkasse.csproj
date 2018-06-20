@@ -40,8 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InternalWrapper.cs" />
+    <Compile Include="IRKWrapper.cs" />
     <Compile Include="RKWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RKWrapperDomain.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="asignp11.dll">

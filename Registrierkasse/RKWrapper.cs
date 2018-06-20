@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Registrierkasse
 {
-    public class RKWrapper
+    internal class RKWrapper: IRKWrapper
     {
         private static bool isInitialized = false;
         private static bool is32Bit = (IntPtr.Size == 4);
@@ -22,8 +22,10 @@ namespace Registrierkasse
 
         ~RKWrapper()
         {
+            UnloadCryptoLibrary();
         }
 
+        #region public methods
 
         public int GetInfo(out string zdaId, out X509Certificate sigCert, out X509Certificate issCert)
         {
@@ -82,64 +84,6 @@ namespace Registrierkasse
             }
             return ret;
 
-        }
-
-        private void Info32(ref string zdaId, ref X509Certificate sigCert, ref X509Certificate issCert, ref int ret, IntPtr pZdaID, ulong sigCertSerialLen, IntPtr pSigCertSerial, byte[] sigCertBytes, IntPtr pSigCert, ulong sigCertLen, byte[] issCertBytes, IntPtr pIssCert, ulong issCertLen)
-        {
-            UInt32 sigCertSerialLen32 = (UInt32)sigCertSerialLen;
-            UInt32 sigCertLen32 = (UInt32)sigCertLen;
-            UInt32 issCertLen32 = (UInt32)issCertLen;
-
-            ret = InternalWrapper.C_RKInfo32(pZdaID, pSigCertSerial, ref sigCertSerialLen32, pSigCert, ref sigCertLen32, pIssCert, ref issCertLen32);
-
-            if (ret == 0)
-            {
-                byte[] zdaIDbytes = new byte[3];
-                // Set data from response
-                Marshal.Copy(pZdaID, zdaIDbytes, 0, 3);
-                zdaId = System.Text.Encoding.UTF8.GetString(zdaIDbytes);
-
-                Marshal.Copy(pSigCert, sigCertBytes, 0, (int)sigCertLen32);
-                Marshal.Copy(pIssCert, issCertBytes, 0, (int)issCertLen32);
-
-                sigCert = new X509Certificate(sigCertBytes);
-                issCert = new X509Certificate(issCertBytes);
-
-                LastError = "";
-            }
-            else
-            {
-                LastError = "GetInfo: call to C_RKInfo failed";
-            }
-        }
-
-        private void Info64(ref string zdaId, ref X509Certificate sigCert, ref X509Certificate issCert, ref int ret, IntPtr pZdaID, ulong sigCertSerialLen, IntPtr pSigCertSerial, byte[] sigCertBytes, IntPtr pSigCert, ulong sigCertLen, byte[] issCertBytes, IntPtr pIssCert, ulong issCertLen)
-        {
-            UInt64 sigCertSerialLen64 = (UInt64)sigCertSerialLen;
-            UInt64 sigCertLen64 = (UInt64)sigCertLen;
-            UInt64 issCertLen64 = (UInt64)issCertLen;
-
-            ret = InternalWrapper.C_RKInfo64(pZdaID, pSigCertSerial, ref sigCertSerialLen64, pSigCert, ref sigCertLen64, pIssCert, ref issCertLen64);
-
-            if (ret == 0)
-            {
-                byte[] zdaIDbytes = new byte[3];
-                // Set data from response
-                Marshal.Copy(pZdaID, zdaIDbytes, 0, 3);
-                zdaId = System.Text.Encoding.UTF8.GetString(zdaIDbytes);
-
-                Marshal.Copy(pSigCert, sigCertBytes, 0, (int)sigCertLen64);
-                Marshal.Copy(pIssCert, issCertBytes, 0, (int)issCertLen64);
-
-                sigCert = new X509Certificate(sigCertBytes);
-                issCert = new X509Certificate(issCertBytes);
-
-                LastError = "";
-            }
-            else
-            {
-                LastError = "GetInfo: call to C_RKInfo failed";
-            }
         }
 
         public int Sign(byte[] dataToSign, out byte[] signature)
@@ -201,6 +145,69 @@ namespace Registrierkasse
             return ret;
         }
 
+        #endregion public methods
+
+        
+        #region private methods
+
+        private void Info32(ref string zdaId, ref X509Certificate sigCert, ref X509Certificate issCert, ref int ret, IntPtr pZdaID, ulong sigCertSerialLen, IntPtr pSigCertSerial, byte[] sigCertBytes, IntPtr pSigCert, ulong sigCertLen, byte[] issCertBytes, IntPtr pIssCert, ulong issCertLen)
+        {
+            UInt32 sigCertSerialLen32 = (UInt32)sigCertSerialLen;
+            UInt32 sigCertLen32 = (UInt32)sigCertLen;
+            UInt32 issCertLen32 = (UInt32)issCertLen;
+
+            ret = InternalWrapper.C_RKInfo32(pZdaID, pSigCertSerial, ref sigCertSerialLen32, pSigCert, ref sigCertLen32, pIssCert, ref issCertLen32);
+
+            if (ret == 0)
+            {
+                byte[] zdaIDbytes = new byte[3];
+                // Set data from response
+                Marshal.Copy(pZdaID, zdaIDbytes, 0, 3);
+                zdaId = System.Text.Encoding.UTF8.GetString(zdaIDbytes);
+
+                Marshal.Copy(pSigCert, sigCertBytes, 0, (int)sigCertLen32);
+                Marshal.Copy(pIssCert, issCertBytes, 0, (int)issCertLen32);
+
+                sigCert = new X509Certificate(sigCertBytes);
+                issCert = new X509Certificate(issCertBytes);
+
+                LastError = "";
+            }
+            else
+            {
+                LastError = "GetInfo: call to C_RKInfo failed";
+            }
+        }
+
+        private void Info64(ref string zdaId, ref X509Certificate sigCert, ref X509Certificate issCert, ref int ret, IntPtr pZdaID, ulong sigCertSerialLen, IntPtr pSigCertSerial, byte[] sigCertBytes, IntPtr pSigCert, ulong sigCertLen, byte[] issCertBytes, IntPtr pIssCert, ulong issCertLen)
+        {
+            UInt64 sigCertSerialLen64 = (UInt64)sigCertSerialLen;
+            UInt64 sigCertLen64 = (UInt64)sigCertLen;
+            UInt64 issCertLen64 = (UInt64)issCertLen;
+
+            ret = InternalWrapper.C_RKInfo64(pZdaID, pSigCertSerial, ref sigCertSerialLen64, pSigCert, ref sigCertLen64, pIssCert, ref issCertLen64);
+
+            if (ret == 0)
+            {
+                byte[] zdaIDbytes = new byte[3];
+                // Set data from response
+                Marshal.Copy(pZdaID, zdaIDbytes, 0, 3);
+                zdaId = System.Text.Encoding.UTF8.GetString(zdaIDbytes);
+
+                Marshal.Copy(pSigCert, sigCertBytes, 0, (int)sigCertLen64);
+                Marshal.Copy(pIssCert, issCertBytes, 0, (int)issCertLen64);
+
+                sigCert = new X509Certificate(sigCertBytes);
+                issCert = new X509Certificate(issCertBytes);
+
+                LastError = "";
+            }
+            else
+            {
+                LastError = "GetInfo: call to C_RKInfo failed";
+            }
+        }
+
         private void Sign32(ref byte[] signature, ref int ret, IntPtr pSig, IntPtr pTBS, ulong tbsLen, ulong sigLen)
         {
             UInt32 uSigLen = (UInt32)sigLen;
@@ -233,8 +240,7 @@ namespace Registrierkasse
             }
         }
 
-
-        public int LoadCryptoLibrary()
+        private int LoadCryptoLibrary()
         {
             int ret = InternalWrapper.C_Initialize(IntPtr.Zero);
             if (ret == 0 // CKR_OK
@@ -252,7 +258,7 @@ namespace Registrierkasse
             return ret;
         }
 
-        public static int UnloadCryptoLibrary()
+        internal static int UnloadCryptoLibrary()
         {
             int ret = InternalWrapper.C_Finalize(IntPtr.Zero);
             if (ret == 0 // CKR_OK
@@ -266,7 +272,7 @@ namespace Registrierkasse
             return ret;
         }
 
-
+        #endregion private methods
 
     }
 }

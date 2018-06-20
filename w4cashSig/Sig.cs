@@ -51,7 +51,7 @@ namespace w4cashSig
             {
                 try
                 {
-                    RKWrapper rkw = new RKWrapper();
+                    RKWrapperDomain rkw = new RKWrapperDomain();
 
                     int ret = 0;
 
@@ -66,36 +66,15 @@ namespace w4cashSig
                         SetLastError("Initialise.GetInfoFailed");
                         isInitialised = false;
 
-                        Restart();
                     }
                 }
                 catch (Exception ex)
                 {
                     SetLastError("Initialise", ex.Message);
-                    Restart();
                 }
 
             }
             return isInitialised;
-        }
-
-
-        private static void Restart()
-        {
-            try
-            {
-                // try restart web service (host and process)
-                OperationContext.Current.Host.Abort();
-                OperationContext.Current.Host.Close();
-
-                var entryAssembly = Assembly.GetEntryAssembly();
-                Process.Start(entryAssembly.CodeBase);
-                Process.GetCurrentProcess().Kill();
-            }
-            catch (Exception ex)
-            {
-                SetLastError("Restart", ex.Message);
-            }
         }
 
         private static bool VerifyData(byte[] data, byte[] signature)
@@ -143,7 +122,7 @@ namespace w4cashSig
 
             try
             {
-                RKWrapper rkw = new RKWrapper();
+                RKWrapperDomain rkw = new RKWrapperDomain();
 
                 byte[] signature;
                 int ret = rkw.Sign(ToBeSigned, out signature);

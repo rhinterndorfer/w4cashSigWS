@@ -7,5 +7,4 @@
 /w4cashSig/bin
 /w4cashSig/obj
 *.suo
-w4cashSig/.vs/w4cashSig/v15/Server/sqlite3/db.lock
-w4cashSig/.vs/w4cashSig/v15/Server/sqlite3/storage.ide
+w4cashSig/.vs/
