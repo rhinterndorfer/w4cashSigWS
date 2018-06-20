@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -25,49 +26,88 @@ namespace w4cashSig
         {
             lastError = error;
             lastErrorExceptionMessage = exceptionMessage;
+
+
+            try
+            {
+                string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "RKSV.log");
+                using (var sw = File.AppendText(fileName))
+                {
+                    sw.WriteLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"));
+                    sw.WriteLine(error);
+                    if (exceptionMessage != null)
+                        sw.WriteLine(exceptionMessage);
+                }
+            }
+            catch (Exception)
+            {
+                // do nothing
+            }
         }
 
         public static bool Initialise()
         {
             if (!isInitialised)
             {
-                RKWrapper rkw = new RKWrapper();
-                
-                int ret = 0;
-
-                ret = rkw.GetInfo(out zdaId, out sigCert, out issuerCert);
-
-                if (ret == 0)
+                try
                 {
-                    isInitialised = true;
+                    RKWrapper rkw = new RKWrapper();
+
+                    int ret = 0;
+
+                    ret = rkw.GetInfo(out zdaId, out sigCert, out issuerCert);
+
+                    if (ret == 0)
+                    {
+                        isInitialised = true;
+                    }
+                    else
+                    {
+                        SetLastError("Initialise.GetInfoFailed");
+                        isInitialised = false;
+
+                        Restart();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    SetLastError("Initialise.GetInfoFailed");
-                    isInitialised = false;
-
-                    // try restart web service (host and process)
-                    OperationContext.Current.Host.Abort();
-                    OperationContext.Current.Host.Close();
-
-                    var entryAssembly = Assembly.GetEntryAssembly();
-                    Process.Start(entryAssembly.CodeBase);
-                    Process.GetCurrentProcess().Kill();
+                    SetLastError("Initialise", ex.Message);
+                    Restart();
                 }
-                
+
             }
             return isInitialised;
         }
 
+
+        private static void Restart()
+        {
+            try
+            {
+                // try restart web service (host and process)
+                OperationContext.Current.Host.Abort();
+                OperationContext.Current.Host.Close();
+
+                var entryAssembly = Assembly.GetEntryAssembly();
+                Process.Start(entryAssembly.CodeBase);
+                Process.GetCurrentProcess().Kill();
+            }
+            catch (Exception ex)
+            {
+                SetLastError("Restart", ex.Message);
+            }
+        }
 
         private static bool VerifyData(byte[] data, byte[] signature)
         {
             X509Certificate2 cer = new X509Certificate2(sigCert);
             var pk = cer.GetECDsaPublicKey();
             bool verified = false;
-            try {
+            try
+            {
                 verified = pk.VerifyData(data, signature, HashAlgorithmName.SHA256);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SetLastError("VerifyData.VerifyDataException", ex.Message);
             }
@@ -100,19 +140,29 @@ namespace w4cashSig
         public byte[] Sign(byte[] ToBeSigned)
         {
             Initialise();
-            RKWrapper rkw = new RKWrapper();
-            
-            byte[] signature;
-            int ret = rkw.Sign(ToBeSigned, out signature);
-            if(ret != 0)
-                SetLastError("Sign.SignFailed");
 
-            if (ret == 0 && VerifyData(ToBeSigned, signature))
+            try
             {
-                return signature;
+                RKWrapper rkw = new RKWrapper();
+
+                byte[] signature;
+                int ret = rkw.Sign(ToBeSigned, out signature);
+                if (ret != 0)
+                    SetLastError("Sign.SignFailed");
+
+                if (ret == 0 && VerifyData(ToBeSigned, signature))
+                {
+                    return signature;
+                }
+                else
+                {
+                    isInitialised = false;
+                    return null;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                SetLastError("Sign", ex.Message);
                 isInitialised = false;
                 return null;
             }
